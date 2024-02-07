@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "usersapp"
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,13 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        "NAME":""
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'drf',
+        'USER':'root',
+        "PASSWORD":"",
+        "PORT":"3306",
+        "HOST":"localhost", # 127.0.0.1 we can also put
+
     }
 }
 
