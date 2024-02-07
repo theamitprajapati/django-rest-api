@@ -5,6 +5,13 @@ from rest_framework.decorators import api_view
 from .models import EmpModel
 from .serializer import DataSerializer
 
+
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
+
 # Create your views here.
 @api_view(['GET'])
 def welcome(request):
@@ -21,14 +28,14 @@ def login(request):
     row = dict(request.data)
     #print("Log",row['email'],flush=True)
 
-    details =  EmpModel.objects.get(email=row['email'],password=row['password'])
+    details =  EmpModel.objects.get(email=row['email'])
     serializer = DataSerializer(details)
-    print(serializer.data,flush=True)
-    # if serializer.is_valid():
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+    user = serializer.data
+    if user['password'] == row['password']:
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response({'message':"Invlid email or passowrd"}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 @api_view(['GET'])
 def list(request):
@@ -51,7 +58,3 @@ def register(request):
 
 
 
-# {
-#     "email": "admin",
-#     "password": "admin"
-# }
