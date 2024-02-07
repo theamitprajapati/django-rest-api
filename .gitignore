@@ -2,3 +2,4 @@ venv
 db.sql3/
 usersapp/__pycache__
 drf/__pycache__
+employee/__pycache__
