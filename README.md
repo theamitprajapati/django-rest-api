@@ -2,6 +2,11 @@
 
 This repo is only for api implementation 
 
+## Requirement
+- Install django
+- Install rest_framework
+- Install rest_framework_simplejwt
+
 
 ## Features
 
