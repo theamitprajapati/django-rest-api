@@ -2,14 +2,10 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import EmpModel
 from .serializer import MyTokenObtainPairSerializer,UserSerializer
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-
-
-
 from django.contrib.auth.models import User
 
 
@@ -38,13 +34,6 @@ def login(request):
 
     except Exception:
         return Response({"response":"Somethink went wrong"})
-
-    # user = serializer.data
-    # data = MyTokenObtainPairSerializer.get_token(user)
-    # if user['password'] == row['password']:
-    #     return Response({'name':user['name'],"token":data},status=status.HTTP_200_OK)
-    # else:
-    return Response({'message':"Invlid email or passowrd"}, status=status.HTTP_400_BAD_REQUEST)
         
 @api_view(['POST'])
 def register(request):
@@ -61,7 +50,11 @@ def register(request):
 
 @api_view(['GET'])
 def list(request):
-    queryset = User.objects.all()
-    serializer = UserSerializer(queryset, many=True)
-    return Response(serializer.data)
+    try:
+        queryset = User.objects.all()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    except:
+        return Response({"message":'Somethin went wrong?'}, status=status.HTTP_400_BAD_REQUEST)
+ 
 
