@@ -57,4 +57,20 @@ def list(request):
     except:
         return Response({"message":'Somethin went wrong?'}, status=status.HTTP_400_BAD_REQUEST)
  
+@api_view(['GET'])
+def change_password(request):
+    print(request.user.username,flush=True)
+    try:
+        body = dict(request.data)  
+        user = authenticate(request,username=request.user.username,password=body['old_password'])
+        if user is None:
+            return Response({"response":"Invalid Old Password"})
+        instance_user = User.objects.get(pk=request.user.id)
+        instance_user.set_password(body['new_password'])
+        instance_user.save()
+        return Response({"response":"Password have been changed !"},status=status.HTTP_200_OK)
+    except:
+        return Response({"message":'Somethin went wrong?'}, status=status.HTTP_400_BAD_REQUEST)
+ 
+
 
