@@ -3,12 +3,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import EmpModel
-from .serializer import DataSerializer
+from .serializer import DataSerializer,MyTokenObtainPairSerializer
 
 
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+# from rest_framework_simplejwt.serializers import MyTokenObtainPairSerializer
+# from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 
@@ -26,13 +26,12 @@ def welcome(request):
 @api_view(['POST'])
 def login(request):
     row = dict(request.data)
-    #print("Log",row['email'],flush=True)
-
     details =  EmpModel.objects.get(email=row['email'])
     serializer = DataSerializer(details)
     user = serializer.data
+    data = MyTokenObtainPairSerializer.get_token(user)
     if user['password'] == row['password']:
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'name':user['name'],"token":str(data)},status=status.HTTP_200_OK)
     else:
         return Response({'message':"Invlid email or passowrd"}, status=status.HTTP_400_BAD_REQUEST)
         
